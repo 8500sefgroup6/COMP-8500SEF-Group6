@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Order #{{ order.id }} Status</h2>
+<p>Placed at: {{ order.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+<p><strong>Status:</strong> {{ order.status.value.replace('_',' ').title() }}</p>
+<p><strong>Total:</strong> ¥{{ '%.2f' % order.total() }}</p>
+
+<ol class="steps">
+  {% set steps = ['placed','preparing','out_for_delivery','delivered'] %}
+  {% for s in steps %}
+    <li class="{{ 'done' if steps.index(s) <= steps.index(order.status.value) else '' }}">{{ s.replace('_',' ').title() }}</li>
+  {% endfor %}
+</ol>
+
+<p><a class="btn" href="{{ url_for('menu') }}">Back to Menu</a></p>
+{% endblock %}

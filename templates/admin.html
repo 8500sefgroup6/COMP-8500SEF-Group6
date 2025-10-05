@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin Dashboard ⚙️</h2>
+
+<div class="card">
+  <h3>Menu Items</h3>
+  <table class="cart-table">
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Action</th>
+    </tr>
+    {% for it in items %}
+    <tr>
+      <td>{{ it.name }}</td>
+      <td>{{ it.description }}</td>
+      <td>¥{{ '%.2f' % (it.price_cents / 100) }}</td>
+      <td>
+        <form method="post" action="{{ url_for('delete_item', item_id=it.id) }}">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p><a class="btn" href="{{ url_for('add_item') }}">Add New Item</a></p>
+</div>
+
+<br>
+
+<div class="card">
+  <h3>Orders (Update Status)</h3>
+  <table class="cart-table">
+    <tr>
+      <th>Order #</th>
+      <th>Customer</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th>Total</th>
+      <th>Current Status</th>
+      <th>Update</th>
+      <th>Track</th>
+      <th>Delete</th>
+    </tr>
+    {% for o in orders %}
+    <tr>
+      <td>{{ o.id }}</td>
+      <td>{{ o.customer_name }}</td>
+      <td>{{ o.customer_phone }}</td>
+      <td>{{ o.customer_address }}</td>
+      <td>¥{{ '%.2f' % (o.total_cents / 100) }}</td>
+      <td>{{ o.status }}</td>
+      <td>
+        <form method="post" action="{{ url_for('update_order_status', order_id=o.id) }}" style="display:inline;">
+          <select name="status">
+            {% for s in ['placed','preparing','out_for_delivery','delivered','cancelled'] %}
+            <option value="{{ s }}" {% if o.status == s %}selected{% endif %}>{{ s.replace('_',' ').title() }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn">Update</button>
+        </form>
+      </td>
+      <td>
+        <a class="btn" href="{{ url_for('track_order', order_id=o.id) }}">Open</a>
+      </td>
+      <td>
+        <form method="post" action="{{ url_for('delete_order', order_id=o.id) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this order?');">
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

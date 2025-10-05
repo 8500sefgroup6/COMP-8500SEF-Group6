@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Order #{{ order.id }} Tracking 🚚</h2>
+<div class="card">
+  <p><strong>Customer:</strong> {{ order.customer_name }} | <strong>Phone:</strong> {{ order.customer_phone or '-' }} | <strong>Total:</strong> ¥{{ '%.2f' % (order.total_cents/100) }}</p>
+  <ol class="timeline">
+    {% set cur = order.status.value if order.status is not string else order.status %}
+    {% set steps = ['placed','preparing','out_for_delivery','delivered'] %}
+    {% for s in steps %}
+      <li class="timeline-step {% if steps.index(s) <= steps.index(cur) %}active{% endif %}">
+        {{ s|capitalize }}
+      </li>
+    {% endfor %}
+  </ol>
+  <p style="margin-top:1rem;">This page auto-refreshes every 10s.</p>
+</div>
+
+<style>
+.timeline { list-style:none; padding-left: 0; display:flex; gap:1rem; flex-wrap: wrap; }
+.timeline-step {
+  padding: .5rem .8rem; border-radius: 999px; background: #eee; color:#333;
+  border:1px solid #ddd;
+}
+.timeline-step.active { background:#d6f5d6; border-color:#9ad29a; }
+</style>
+
+<script>
+  // Simple auto refresh to reflect updates from admin
+  setTimeout(() => { window.location.reload(); }, 10000);
+</script>
+{% endblock %}

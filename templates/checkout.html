@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Checkout 🧾</h2>
+<div class="card">
+  <form method="post" action="{{ url_for('checkout') }}">
+    <label for="customer_name">Name:</label><br>
+    <input type="text" id="customer_name" name="customer_name" required><br><br>
+
+    <label for="customer_phone">Phone:</label><br>
+    <input type="text" id="customer_phone" name="customer_phone" required><br><br>
+
+    <label for="customer_address">Address:</label><br>
+    <textarea id="customer_address" name="customer_address" required></textarea><br><br>
+
+    <button type="submit" class="btn">Place Order</button>
+  </form>
+</div>
+{% endblock %}

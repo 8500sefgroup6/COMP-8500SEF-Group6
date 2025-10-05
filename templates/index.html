@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Welcome to the HKMU 8500SEF Diner 🍽️</h2>
+<div class="card" style="text-align: center;">
+  <p>Welcome to our diner! Fresh, delicious meals are just a click away.</p>
+  <p>Browse the menu, place your order, and enjoy your food hassle-free. 😋</p>
+  
+  <!-- 美食图片展示 -->
+  <div style="margin: 20px 0;">
+    <img src="{{ url_for('static', filename='images/food_banner.png') }}" 
+         alt="Delicious Food" 
+         style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+  </div>
+
+  <p><a class="btn" href="{{ url_for('menu') }}">Start Ordering</a></p>
+</div>
+{% endblock %}

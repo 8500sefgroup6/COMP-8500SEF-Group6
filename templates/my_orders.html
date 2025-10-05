@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>My Orders 📦</h2>
+<div class="card">
+  {% if orders %}
+    <table class="cart-table">
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Date</th>
+        <th>Track</th>
+      </tr>
+      {% for order in orders %}
+      <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.customer_name }}</td>
+        <td>{{ order.customer_phone }}</td>
+        <td>{{ order.customer_address }}</td>
+        <td>{{ order.status.value if order.status is not string else order.status }}</td>
+        <td>¥{{ '%.2f' % (order.total_cents / 100) }}</td>
+        <td>{{ order.created_at.strftime("%Y-%m-%d %H:%M") if order.created_at else "" }}</td>
+        <td><a class="btn" href="{{ url_for('track_order', order_id=order.id) }}">Track</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>No orders yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
