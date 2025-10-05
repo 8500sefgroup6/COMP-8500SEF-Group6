@@ -15,7 +15,7 @@ A compact teaching-ready web app demonstrating a food ordering workflow with liv
 ```bash
 
 # 1) Clone and test the repository
-git clone https://github.com/8500sefgroup6/COMP-8500-Group6.git
+git clone https://github.com/8500sefgroup6/COMP-8500SEF-Group6.git
 cd COMP-8500-Group6
 
 # 2) Create a virtualenv (recommended)
