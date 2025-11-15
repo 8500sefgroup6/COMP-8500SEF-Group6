@@ -12,7 +12,6 @@ def inspect_db():
         for t in tables:
             print(f"  - {t}")
 
-        # 打印每个表的字段信息
         for t in tables:
             print(f"\n🔎 表结构: {t}")
             for col in inspector.get_columns(t):
