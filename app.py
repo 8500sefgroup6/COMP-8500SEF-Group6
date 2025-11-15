@@ -12,7 +12,7 @@ app.permanent_session_lifetime = timedelta(hours=6)
 db.init_app(app)
 
 def get_cart():
-    return session.setdefault("cart", {})  
+    return session.setdefault("cart", {})  # {menu_item_id: qty}
 
 @app.context_processor
 def inject_globals():
@@ -54,6 +54,7 @@ def view_cart():
     cart = get_cart()
     ids = [int(i) for i in cart.keys()]
     items = MenuItem.query.filter(MenuItem.id.in_(ids)).all() if ids else []
+    # build cart lines
     lines = []
     subtotal_cents = 0
     for it in items:
@@ -91,7 +92,7 @@ def checkout():
         customer_phone = request.form.get("customer_phone", "").strip()
         customer_address = request.form.get("customer_address", "").strip()
 
-        
+        # 必填校验
         if not (customer_name and customer_phone and customer_address):
             flash("Please fill in your name, phone, and address.", "warning")
             return render_template("checkout.html")
@@ -102,7 +103,7 @@ def checkout():
             flash("Your cart is empty!", "warning")
             return redirect(url_for("menu"))
 
-        
+        # ✅ 创建订单
         order = Order(
             customer_name=customer_name,
             customer_phone=customer_phone,
@@ -110,7 +111,7 @@ def checkout():
             status=OrderStatus.placed
         )
         db.session.add(order)
-        db.session.flush()   
+        db.session.flush()   # ⚡ 生成 order.id
 
         total_cents = 0
         items_by_id = {it.id: it for it in items}
@@ -124,7 +125,7 @@ def checkout():
                 continue
             q = max(1, int(qty))
             oi = OrderItem(
-                order_id=order.id,   
+                order_id=order.id,   # ✅ 正确绑定 order.id
                 menu_item_id=it.id,
                 quantity=q,
                 unit_price_cents=it.price_cents
@@ -135,11 +136,12 @@ def checkout():
         order.total_cents = total_cents
         db.session.commit()
 
-       
+        # 清空购物车
         session["cart"] = {}
         flash("Order placed successfully!", "success")
         return redirect(url_for("my_orders"))
 
+    # GET: 显示表单
     return render_template("checkout.html")
 
 
@@ -174,6 +176,7 @@ def update_order_status(order_id):
     order = Order.query.get_or_404(order_id)
     new_status = request.form.get("status", "placed")
     try:
+        # Handles either Enum or plain string storage
         if hasattr(OrderStatus, new_status):
             order.status = OrderStatus[new_status]
         else:
@@ -189,6 +192,7 @@ def update_order_status(order_id):
 def delete_order(order_id):
     order = Order.query.get_or_404(order_id)
     try:
+        # 先删掉 order_items，避免外键约束报错
         OrderItem.query.filter_by(order_id=order.id).delete()
         db.session.delete(order)
         db.session.commit()

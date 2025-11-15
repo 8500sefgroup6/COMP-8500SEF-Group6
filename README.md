@@ -13,17 +13,26 @@ A compact teaching-ready web app demonstrating a food ordering workflow with liv
 ## Quickstart
 
 ```bash
-# 1) Create a virtualenv (recommended)
+
+# 1) Clone and test the repository
+git clone https://github.com/8500sefgroup6/COMP-8500SEF-Group6.git
+cd COMP-8500-Group6
+
+# 2) Create a virtualenv (recommended)
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 
-# 2) Install deps
+# 3) Install deps
 pip install -r requirements.txt
 
-# 3) Initialize DB and sample menu
+# 4) Test basic functionality
+python -c "import flask; print('Flask OK')"
+python -c "from app import app; print('App import OK')"
+
+# 5) Initialize DB and sample menu
 python db_init.py
 
-# 4) Run the app
+# 6) Run the app
 python app.py
 # Then open http://127.0.0.1:5000
 ```

@@ -27,6 +27,8 @@ class Order(db.Model):
     __tablename__ = "orders"
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+
+    # ✅ 保留唯一一套字段
     customer_name = db.Column(db.String(120), nullable=False)
     customer_phone = db.Column(db.String(20))
     customer_address = db.Column(db.String(255))

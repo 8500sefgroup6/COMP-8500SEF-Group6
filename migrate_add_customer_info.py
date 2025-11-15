@@ -1,6 +1,7 @@
 from app import app, db
 from sqlalchemy import text
 
+# 必须进入 app context 才能使用 db.engine
 with app.app_context():
     with db.engine.connect() as conn:
         try:

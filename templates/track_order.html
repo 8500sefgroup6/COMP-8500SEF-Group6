@@ -7,7 +7,7 @@
     {% set cur = order.status.value if order.status is not string else order.status %}
     {% set steps = ['placed','preparing','out_for_delivery','delivered'] %}
     {% for s in steps %}
-      <li class="timeline-step {% if (cur in steps) and (steps.index(s) <= steps.index(cur)) %}active{% endif %}">
+      <li class="timeline-step {% if steps.index(s) <= steps.index(cur) %}active{% endif %}">
         {{ s|capitalize }}
       </li>
     {% endfor %}
