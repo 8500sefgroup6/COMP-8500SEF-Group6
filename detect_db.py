@@ -4,17 +4,16 @@ from sqlalchemy import inspect
 def inspect_db():
     with app.app_context():
         engine = db.engine
-        print(f"✅ 当前数据库 URL: {engine.url}")
+        print(f"Current Database URL: {engine.url}")
 
         inspector = inspect(engine)
         tables = inspector.get_table_names()
-        print("\n📋 数据库包含的表:")
+        print("\nDatabase included:")
         for t in tables:
             print(f"  - {t}")
 
-        # 打印每个表的字段信息
         for t in tables:
-            print(f"\n🔎 表结构: {t}")
+            print(f"\n Field structure: {t}")
             for col in inspector.get_columns(t):
                 name = col["name"]
                 ctype = col["type"]
