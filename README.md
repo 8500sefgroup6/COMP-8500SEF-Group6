@@ -16,7 +16,7 @@ A compact teaching-ready web app demonstrating a food ordering workflow with liv
 
 # 1) Clone and test the repository
 git clone https://github.com/8500sefgroup6/COMP-8500SEF-Group6.git
-cd COMP-8500-Group6
+cd COMP-8500SEF-Group6
 
 # 2) Create a virtualenv (recommended)
 python -m venv .venv
@@ -62,3 +62,4 @@ food_ordering_app/
 ## Notes
 - This is intentionally minimal. You can extend with user accounts, payments, delivery ETA, WebSocket updates, etc.
 - For demo, the "address" and "phone" are collected at checkout and stored per order.
+
